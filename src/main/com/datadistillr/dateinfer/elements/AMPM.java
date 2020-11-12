@@ -1,4 +1,4 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
 public class AMPM extends DateElement {
 

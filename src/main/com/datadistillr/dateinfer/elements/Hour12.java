@@ -1,8 +1,8 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
-public class Year2 extends DateElement {
-  public Year2() {
-    directive = "%y";
+public class Hour12 extends DateElement {
+  public Hour12() {
+    directive = "%I";
   }
 
   @Override
@@ -15,7 +15,7 @@ public class Year2 extends DateElement {
     int tokenValue;
     try {
       tokenValue = Integer.parseInt(token);
-      return (tokenValue >= 0 && tokenValue <= 99);
+      return (tokenValue >= 1 && tokenValue <= 12);
     } catch (Exception e) {
       return false;
     }

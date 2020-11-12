@@ -1,8 +1,8 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
-public class Minute extends DateElement {
-  public Minute() {
-    directive = "%m";
+public class Hour24 extends DateElement {
+  public Hour24() {
+    directive = "%H";
   }
 
   @Override
@@ -15,7 +15,7 @@ public class Minute extends DateElement {
     int tokenValue;
     try {
       tokenValue = Integer.parseInt(token);
-      return (tokenValue >= 0 && tokenValue <= 59);
+      return (tokenValue >= 0 && tokenValue <= 23);
     } catch (Exception e) {
       return false;
     }

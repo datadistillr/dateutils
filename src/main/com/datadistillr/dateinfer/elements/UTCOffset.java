@@ -1,4 +1,4 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

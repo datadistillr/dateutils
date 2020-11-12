@@ -1,4 +1,4 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
 import java.time.ZoneId;
 import java.util.Set;

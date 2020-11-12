@@ -1,4 +1,4 @@
-package com.datadistillr.dateutils.elements;
+package com.datadistillr.dateinfer.elements;
 
 
 public abstract class DateElement {
@@ -23,4 +23,6 @@ public abstract class DateElement {
   public String toString() {
     return this.directive;
   }
+
+  public boolean isFiller() { return false; }
 }
