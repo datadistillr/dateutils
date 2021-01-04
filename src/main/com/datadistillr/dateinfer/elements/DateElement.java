@@ -25,4 +25,6 @@ public abstract class DateElement {
   }
 
   public boolean isFiller() { return false; }
+
+  public boolean isKeepOriginal() { return false; }
 }

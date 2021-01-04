@@ -41,7 +41,7 @@ public class Sequence extends ConditionClause {
   public boolean isTrue(List<DateElement> elementList) {
     int position = 0;
     for (DateElement element : elementList) {
-      if ( this  ){ // TODO Finish this
+      if ( match(element, sequence.get(position))) {
         position += 1;
         if (position == sequence.size()) {
           return true;
@@ -59,15 +59,19 @@ public class Sequence extends ConditionClause {
    * @param sequenceExpression
    * @return true if the element matches, false if not
    */
-  private static boolean match (DateElement element, DateElement sequenceExpression) {
-    if () {
+  public static boolean match (DateElement element, DateElement sequenceExpression) {
+    /*if () {
 
     } else {
       return element == sequenceExpression;
-    }
+    }*/
+
+    // TODO Fix this..
+    return true;
+
   }
 
-  private static int find (List<DateElement>findSequence, List<DateElement> elementList) {
+  public static int find (List<DateElement>findSequence, List<DateElement> elementList) {
     int sequencePosition = 0;
 
     DateElement element = null;

@@ -15,15 +15,20 @@
  *
  */
 
-package com.datadistillr.dateinfer.rules;
+package com.datadistillr.dateinfer.elements;
 
-import com.datadistillr.dateinfer.elements.DateElement;
-;import java.util.List;
-
-public class KeepOriginal extends ActionClause{
+public class KeepOriginal extends DateElement {
 
   @Override
-  public List<DateElement> act(List<DateElement> before) {
-    return before;
+  public boolean isNumerical() {
+    return false;
   }
+
+  @Override
+  public boolean isMatch(String token) {
+    return false;
+  }
+
+  @Override
+  public boolean isKeepOriginal() { return true; }
 }

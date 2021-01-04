@@ -21,7 +21,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.List;
 
-public class If {
+public class If extends ConditionClause {
   private final ConditionClause condition;
   private final ActionClause action;
 
@@ -36,5 +36,11 @@ public class If {
     } else {
       return elementList;
     }
+  }
+
+
+  @Override
+  public boolean isTrue(List<DateElement> elementList) {
+    return false;
   }
 }

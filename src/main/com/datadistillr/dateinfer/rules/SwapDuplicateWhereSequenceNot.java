@@ -22,20 +22,35 @@ import com.datadistillr.dateinfer.elements.DateElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Swap extends ActionClause {
+public class SwapDuplicateWhereSequenceNot extends ActionClause {
+
   private final DateElement remove;
   private final DateElement insert;
+  private final List<DateElement> sequence;
 
-  public Swap(DateElement remove, DateElement insert) {
+  public SwapDuplicateWhereSequenceNot(DateElement remove, DateElement insert, List<DateElement> sequence) {
     this.remove = remove;
     this.insert = insert;
+    this.sequence = sequence;
   }
 
   @Override
-  public List<DateElement> act(List<DateElement> elementList) {
-    List<DateElement> copy = new ArrayList<>(elementList);
-    int index = copy.indexOf(remove);
-    copy.set(index, insert);
-    return copy;
+  public List<DateElement> act(List<DateElement> before) {
+    List<DateElement> copy = new ArrayList<>(sequence);
+
+    int startPosition = Sequence.find(sequence, copy);
+    int endPosition = startPosition + sequence.size();
+
+    for (int i = 0; i < copy.size(); i++) {
+      if (startPosition <= i || i <= endPosition) {
+        continue;
+      } else {
+        if (copy.get(i) == remove) {
+          copy.set(i, insert);
+          return copy;
+        }
+      }
+    }
+    throw new RuntimeException("Failed to fine element in sequence.");
   }
 }

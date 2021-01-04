@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Contains extends ConditionClause{
+public class Contains extends ConditionClause {
 
   private final List<ConditionClause> conditions;
 

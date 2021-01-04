@@ -29,4 +29,6 @@ public abstract class ActionClause {
    * @return Return a new instance of elem_list permuted by the action
    */
   public abstract List<DateElement> act(List<DateElement> before);
+
+  public boolean isKeepOriginal() { return false; }
 }

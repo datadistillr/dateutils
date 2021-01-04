@@ -22,20 +22,27 @@ import com.datadistillr.dateinfer.elements.DateElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Swap extends ActionClause {
-  private final DateElement remove;
-  private final DateElement insert;
+public class SwapSequence extends ActionClause {
 
-  public Swap(DateElement remove, DateElement insert) {
-    this.remove = remove;
-    this.insert = insert;
+  private final List<DateElement> findSequence;
+  private final List<DateElement> swapSequence;
+
+  public SwapSequence (List<DateElement> findSequence, List<DateElement> swapSequence) {
+    this.findSequence = findSequence;
+    this.swapSequence = swapSequence;
   }
 
   @Override
-  public List<DateElement> act(List<DateElement> elementList) {
+  public List<DateElement> act (List<DateElement> elementList) {
     List<DateElement> copy = new ArrayList<>(elementList);
-    int index = copy.indexOf(remove);
-    copy.set(index, insert);
+
+    int startPosition = Sequence.find(findSequence, copy);
+    for (int i = 0; i < swapSequence.size(); i++) {
+      DateElement replacement = swapSequence.get(i);
+      if (! replacement.isKeepOriginal()) {
+        copy.set(startPosition + i, replacement);
+      }
+    }
     return copy;
   }
 }
