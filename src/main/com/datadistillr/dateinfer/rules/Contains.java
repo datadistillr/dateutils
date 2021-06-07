@@ -22,6 +22,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Contains extends ConditionClause {
 
@@ -42,5 +43,22 @@ public class Contains extends ConditionClause {
       }
     }
     return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(conditions);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Contains other = (Contains) obj;
+    return Objects.equals(conditions, other.conditions);
   }
 }

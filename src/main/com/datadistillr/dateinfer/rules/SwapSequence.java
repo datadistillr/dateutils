@@ -21,6 +21,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SwapSequence extends ActionClause {
 
@@ -44,5 +45,23 @@ public class SwapSequence extends ActionClause {
       }
     }
     return copy;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(findSequence, swapSequence);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    SwapSequence other = (SwapSequence) obj;
+    return Objects.equals(findSequence, other.findSequence) &&
+      Objects.equals(swapSequence, other.swapSequence);
   }
 }

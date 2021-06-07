@@ -28,13 +28,16 @@ import com.datadistillr.dateinfer.elements.Minute;
 import com.datadistillr.dateinfer.elements.MonthNum;
 import com.datadistillr.dateinfer.elements.MonthTextLong;
 import com.datadistillr.dateinfer.elements.MonthTextShort;
+import com.datadistillr.dateinfer.elements.NonDigit;
 import com.datadistillr.dateinfer.elements.Second;
+import com.datadistillr.dateinfer.elements.SingleDigit;
 import com.datadistillr.dateinfer.elements.Timezone;
 import com.datadistillr.dateinfer.elements.UTCOffset;
 import com.datadistillr.dateinfer.elements.WeekdayLong;
 import com.datadistillr.dateinfer.elements.WeekdayShort;
 import com.datadistillr.dateinfer.elements.Year2;
 import com.datadistillr.dateinfer.elements.Year4;
+import com.datadistillr.dateinfer.rules.ActionClause;
 import com.datadistillr.dateinfer.rules.And;
 import com.datadistillr.dateinfer.rules.ConditionClause;
 import com.datadistillr.dateinfer.rules.Contains;
@@ -49,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -83,19 +87,43 @@ public class Infer {
     DATE_ELEMENTS.add(new WeekdayLong());
     DATE_ELEMENTS.add(new Timezone());
 
+    RULES.add(
+      new If(new Sequence(new MonthNum(), new Filler(":"), new SingleDigit(), new Filler(":"), new SingleDigit()),
+        new SwapSequence(
+          Arrays.asList(new MonthNum(), new Filler(":"), new SingleDigit(), new Filler(":"), new SingleDigit()),
+          Arrays.asList(new Hour12(), new Filler(":"), new Minute(), new Filler(":"), new Second())
+        ))
+    );
 
-   /* If(Sequence(Hour24, F(':'), '\d', '\D'),
-      SwapSequence([Hour24, F(':'), '\d'], [Hour24, F(':'), Minute])),
-    */
-    /*
-    RULES.add(new If(
-      new Sequence(new Hour24(), new Filler(":"), "\d", "\D")
-    ))*/
+    RULES.add(
+      new If(new Sequence(new Hour24(), new Filler(":"), new SingleDigit(), new Filler(":"), new SingleDigit()),
+        new SwapSequence(
+          Arrays.asList(new Hour24(), new Filler(":"), new SingleDigit(), new Filler(":"), new SingleDigit()),
+          Arrays.asList(new Hour24(), new Filler(":"), new Minute(), new Filler(":"), new Second())
+        ))
+    );
 
-    RULES.add(new If(
+    RULES.add(
+      new If(new Sequence(new MonthNum(), new Filler(":"), new SingleDigit(), new NonDigit()),
+        new SwapSequence(
+          Arrays.asList(new MonthNum(), new Filler(":"), new NonDigit()),
+          Arrays.asList(new Hour12(), new Filler(":"), new Minute())
+        ))
+    );
+
+    RULES.add(
+      new If(new Sequence(new Hour24(), new Filler(":"), new SingleDigit(), new NonDigit()),
+        new SwapSequence(
+          Arrays.asList(new Hour24(), new Filler(":"), new NonDigit()),
+          Arrays.asList(new Hour24(), new Filler(":"), new Minute())
+        ))
+    );
+
+    RULES.add(
+      new If(
         new And(
           new Sequence(new Hour12(), new Filler(":"), new Minute()),
-          new Contains(new Hour24())
+          new Contains((ConditionClause) Arrays.asList(new Hour24()))
         ),
         new Swap(new Hour24(), new DayOfMonth())
       )
@@ -123,17 +151,16 @@ public class Infer {
       ))
     );
 
-      // TODO Fix Contains class
     RULES.add(
       new If(
-        new Contains(new MonthNum(), new MonthTextLong()),
+        new Contains((ConditionClause) Arrays.asList(new MonthNum(), new MonthTextLong())),
         new Swap(new MonthNum(), new DayOfMonth())
       )
     );
 
     RULES.add(
       new If(
-        new Contains(new MonthNum(), new MonthTextShort()),
+        new Contains((ConditionClause) Arrays.asList(new MonthNum(), new MonthTextShort())),
         new Swap(new MonthNum(), new DayOfMonth())
       )
     );
@@ -193,20 +220,6 @@ public class Infer {
         )
       )
     );
-
-
-/*
-RULES = [
-    If(Sequence(MonthNum, F(':'), '\d', F(':'), '\d'),
-       SwapSequence([MonthNum, F(':'), '\d', F(':'), '\d'], [Hour12, F(':'), Minute, F(':'), Second])),
-    If(Sequence(Hour24, F(':'), '\d', F(':'), '\d'),
-       SwapSequence([Hour24, F(':'), '\d', F(':'), '\d'], [Hour24, F(':'), Minute, F(':'), Second])),
-    If(Sequence(MonthNum, F(':'), '\d', '\D'),
-       SwapSequence([MonthNum, F(':'), '.'], [Hour12, F(':'), Minute])),
-]
- */
-
-
   }
 
   /**
@@ -238,14 +251,15 @@ RULES = [
 
   /**
    * Return a list of date elements by applying rewrites to the initial date element list
-   * @return
+   * @return a list of date elements after rewriting the elements
    */
-  private List<DateElement> applyRewrites(List<DateElement> dateClasses, List<ConditionClause> x) {
-    /*for (ActionClause rule : RULES) {
-      rule.exe
+  private List<DateElement> applyRewrites(List<DateElement> dateClasses, List<?> altRules) {
+    // TODO Implement this
+    for (ConditionClause rule : RULES) {
+      List<DateElement> result = ((If) rule).execute(dateClasses);
+      dateClasses.addAll(result);
     }
-     */
-    return null;
+    return dateClasses;
   }
 
   /**
@@ -274,7 +288,7 @@ RULES = [
    * @param tokens
    */
   protected static List<Double> percentMatch (List<DateElement> dateClasses, List<String> tokens) {
-    List<Integer> matchCount = new ArrayList<Integer>(Collections.nCopies(dateClasses.size(), 0));
+    List<Integer> matchCount = new ArrayList<>(Collections.nCopies(dateClasses.size(), 0));
     List<Double> percentages = new ArrayList<>();
 
     for (int i = 0; i < dateClasses.size(); i++) {
@@ -309,7 +323,7 @@ RULES = [
 
   /**
    * Return a list of date elements by choosing the most likely element for a token within examples (context-free).
-   * @param examples
+   * @param examples List of most likely elements
    */
   protected static List<DateElement> tagMostLikely(List<String> examples) {
     List<String> tokenizedExamples = new ArrayList<>();

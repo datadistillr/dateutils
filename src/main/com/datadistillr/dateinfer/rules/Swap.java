@@ -21,6 +21,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Swap extends ActionClause {
   private final DateElement remove;
@@ -37,5 +38,23 @@ public class Swap extends ActionClause {
     int index = copy.indexOf(remove);
     copy.set(index, insert);
     return copy;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(remove, insert);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Swap other = (Swap) obj;
+    return Objects.equals(remove, other.remove) &&
+      Objects.equals(insert, other.insert);
   }
 }

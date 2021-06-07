@@ -20,6 +20,7 @@ package com.datadistillr.dateinfer.rules;
 import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.List;
+import java.util.Objects;
 
 public class If extends ConditionClause {
   private final ConditionClause condition;
@@ -30,7 +31,7 @@ public class If extends ConditionClause {
     this.action = action;
   }
 
-  public List<?> execute (List<DateElement> elementList) {
+  public List<DateElement> execute (List<DateElement> elementList) {
     if (condition.isTrue(elementList)) {
       return action.act(elementList);
     } else {
@@ -38,9 +39,26 @@ public class If extends ConditionClause {
     }
   }
 
-
   @Override
   public boolean isTrue(List<DateElement> elementList) {
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(condition, action);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    If other = (If) obj;
+    return Objects.equals(condition, other.condition) &&
+      Objects.equals(action, other.action);
   }
 }

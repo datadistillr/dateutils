@@ -21,6 +21,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SwapDuplicateWhereSequenceNot extends ActionClause {
 
@@ -52,5 +53,24 @@ public class SwapDuplicateWhereSequenceNot extends ActionClause {
       }
     }
     throw new RuntimeException("Failed to fine element in sequence.");
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(remove, insert, sequence);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    SwapDuplicateWhereSequenceNot other = (SwapDuplicateWhereSequenceNot) obj;
+    return Objects.equals(remove, other.remove) &&
+      Objects.equals(insert, other.insert) &&
+      Objects.equals(sequence, other.sequence);
   }
 }

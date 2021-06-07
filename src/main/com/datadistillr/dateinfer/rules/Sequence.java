@@ -23,6 +23,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Sequence extends ConditionClause {
 
@@ -88,6 +89,23 @@ public class Sequence extends ConditionClause {
     }
 
     throw new RuntimeException("Failed to find sequence " + element + " in element list.");
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(sequence);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Sequence other = (Sequence) obj;
+    return Objects.equals(sequence, other.sequence);
   }
 
 }

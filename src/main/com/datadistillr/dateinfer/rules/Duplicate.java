@@ -21,6 +21,7 @@ import com.datadistillr.dateinfer.elements.DateElement;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Duplicate extends ConditionClause{
 
@@ -39,5 +40,22 @@ public class Duplicate extends ConditionClause{
       return true;
     }
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(element);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Duplicate other = (Duplicate) obj;
+    return Objects.equals(element, other.element);
   }
 }
