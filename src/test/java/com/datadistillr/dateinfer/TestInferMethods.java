@@ -24,8 +24,6 @@ public class TestInferMethods {
     List<String> result2 = Infer.tokenizeByCharacterClass("Sat Jan 11 19:54:52 MST 2014");
     System.out.println(result2);
 
-    Sytem.out.println("THIS IS A TEST");
-
   }
 
   @Test
